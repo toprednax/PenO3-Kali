@@ -1,6 +1,12 @@
 Om .c te runnen:
-  > Open terminal/cmd
   
-  > 'gcc FILENAME.c -o FILENAME' (OSX/LINUX/WINDOWS) of 'clang FILENAME.c -o FILENAME' (OSX)
+  Open terminal/cmd
   
-  > './FILENAME'
+  (OSX/LINUX/WINDOWS):
+  
+    gcc FILENAME.c -o FILENAME
+    ./FILENAME
+  (OSX): 
+  
+    clang FILENAME.c -o FILENAME
+    ./FILENAME
