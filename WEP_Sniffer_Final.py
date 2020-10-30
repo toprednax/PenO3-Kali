@@ -6,7 +6,6 @@ import RC4
 from scapy.all import *
 import subprocess as sub
 
-
 class sniffer():
 	def __init__(self):
 		start = input("First time starting up? [Y/N]:")
@@ -78,8 +77,5 @@ class sniffer():
 		process2 = sub.Popen(["xterm", "-e", "sudo python3 /home/kali/Documents/new_sniffer/Airodump.py {}".format(self.mac)])
 		process1.wait()
 		process2.wait()
-		 
-
 
 sniffer()
-
