@@ -25,5 +25,5 @@ int main(void)
 
 	printf("Value for r: %x %x %x %x\n", r[0], r[1], r[2], r[3]);
 
-	return 1;
+	return 0;
 }
