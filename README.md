@@ -5,6 +5,6 @@ Kraak de wifi - Corona verplicht ons
   zo kan bijvoorbeeld een nieuwe feature getest worden (zonder fouten te maken in de werkende versie)
 Met een pull request kan dan de feature geadd worden aan de 'main brach'
 
-Om een subfolder te maken doen we dit via
+Om een subfolder te maken doen we dit via 'create new file' en dan in het naamvaje '/FOLDERNAAM/FILENAAM.extentie' (als er gewoon een folder gecreerd moet worden doe dan '/FOLDERNAAM/FOLDERNAAM.md' en voeg in dat bestand een beschrijving van de folder toe bijvoorbeeld.
 
 Handige link voor en-/decryptie WPA2: https://ie.u-ryukyu.ac.jp/~wada/design04/spec_e.html
