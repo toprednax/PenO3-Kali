@@ -4,7 +4,6 @@ import binascii
 from scapy import utils
 from scapy.all import *
 
-
 def get_iv(arg):
     opl = []
     for pkt in scapy.utils.RawPcapReader('iv-03.cap'):
@@ -30,7 +29,6 @@ def plaintext_to_hex(message_list):
         hex_str += hex_value
     return hex_str
 
-
 def hex_to_plaintext(message_string):
     """
     :param message_string: a string of hex values that are separated by a space
@@ -43,7 +41,6 @@ def hex_to_plaintext(message_string):
         char = int(elem[0:2], 16)
         opl.append(char)
     return opl
-
 
 def make_key(password, message,iv = None):
     """
@@ -58,7 +55,6 @@ def make_key(password, message,iv = None):
         S,iv = ws.KSA(asc_password,iv)
     key = ws.PRGA(S, message)
     return key,iv
-
 
 def encryption(password, message):
     """
@@ -76,7 +72,6 @@ def encryption(password, message):
     hex_iv = plaintext_to_hex(iv)
     packet = hex_iv + ' ' + hex_string
     return packet
-
 
 def decryption(password, packet, iv):
     """
