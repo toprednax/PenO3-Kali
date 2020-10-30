@@ -1,7 +1,6 @@
 import numpy as np
 import random
 
-
 def KSA(key,iv = None):
     if iv is None:
         iv = []
@@ -17,7 +16,6 @@ def KSA(key,iv = None):
         j = (j + S[i] + T[i]) % 256
         S[i], S[j] = S[j], S[i]  # Swap the entries
     return S,iv
-
 
 def PRGA(S, message):
     i = 0
@@ -35,7 +33,5 @@ def PRGA(S, message):
     np.array(key)
     return key
 
-
 def text_to_asc(text):
     return [ord(c) for c in text]
-
