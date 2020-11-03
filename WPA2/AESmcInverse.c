@@ -39,8 +39,8 @@ void multiplication(unsigned char** q, unsigned char* a, unsigned char *s)
 	binary(q_bin, q);
 
 	// Eerst de verm van de veeltermen a en b
-	for(unsigned int i = 0; i < sizeof(b); i++)
+	for(unsigned int i = 0; i < sizeof(*q); i++)
 	{
-
+		printf("hello");
 	}
 }
