@@ -1,6 +1,6 @@
-def algo():
+def algo(encrypted_vector):
 	s = [0x0, 0x0, 0x0, 0x0]			# Decrypted vector
-	a = [0x8e, 0x4d, 0xa1, 0xbc]		# Encrypted vector from i.g., AERRijndeal.c
+	a = encrypted_vector		# Encrypted vector from i.g., AERRijndeal.c
 
 	q = [[0x0e, 0x0b, 0x0d, 0x09],
 		[0x09, 0x0e, 0x0b, 0x0d],
@@ -122,4 +122,4 @@ def longDiv(p):
 	
 	return p
 
-algo()
+algo([0x8e, 0x4d, 0xa1, 0xbc])
