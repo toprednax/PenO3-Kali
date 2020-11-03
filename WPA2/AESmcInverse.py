@@ -11,7 +11,7 @@ def algo(encrypted_vector):
 	for i in range(len(a)):
 		s[i] = hex(int(decrypt(q[i], a, s), 2))
 
-	print(s)
+	return s
 
 def decrypt(q, a, s):
 	result = ''
