@@ -1,48 +1,66 @@
-def algo(num_1, num_2):
-	if int(num_2, 2) == 2:
-		num_1 = twee(num_1)
-	elif int(num_2, 2) == 3:
-		num_1 = drie(num_1)
-	else:
-		num_1 = make8(num_1[2:])
+def algo(unencrypted_vector):
+	s = [0x0, 0x0, 0x0, 0x0]
+	a = unencrypted_vector
+
+	g = [[0x2, 0x3, 0x1, 0x1], 
+		[0x1, 0x2, 0x3, 0x1], 
+		[0x1, 0x1, 0x2, 0x3], 
+		[0x3, 0x1, 0x1, 0x2]]
+
+	num_1 = 0x0
+
+	for i in range(len(g)):
+		for j in range(len(a)):
+			deg_polynomial = g[j][i]
+
+			if deg_polynomial == 0x2:
+				x = two(a[j])
+			elif deg_polynomial == 0x3:
+				x = three(a[j])
+			else:
+				x = make8(a[j])
+			
+			num_1 ^= x
+		
+		s[i] = num_1
 	
-	return num_1
+	return s
 
-def drie(num_1):
-	return bin(int(twee(num_1), 2) ^ int(num_1, 2))[2:]
+def three(num):
+	return two(num) ^ num
 
-def twee(num_1):
-	bin_a = bin(int(str(num_1), 2))[2:]
+def two(num):
+	num = make8(num)
 
-	bin_a = make8(bin_a)
+	if bin(num)[2:][0] == '0':
+		return a * 2
 
-	if bin_a[0] == '0':
-		return bin(int(bin_a, 2) * 2)[2:]
+	num = leftshift(num)
+	num = make8(num)
 
-	bin_a = leftshift(bin_a)
-	bin_a = make8(bin_a)
+	return num ^ 0b00011011			#	Rijndeal polynomial
 
-	return bin(int(bin_a, 2) ^ 0b00011011)[2:]
+def leftshift(num):
+	return num << 1
 
-def leftshift(num_1):
-	return bin(int(num_1, 2) << 1)[2:]
+def make8(num):
+	num = bin(num)[2:]
 
-def make8(num_1):
-	if len(num_1) > 8:
-		while len(num_1) != 8:
-			num_1 = num_1[1:]
+	if len(num) > 8:
+		while len(num) != 8:
+			num = num[1:]
 		
-		return num_1
-	elif len(num_1) == 8:
-		return num_1
+		return int(num, 2)
+	elif len(num) == 8:
+		return int(num, 2)
 	else:
-		while len(num_1) != 8:
-			num_1 = '0' + num_1
+		while len(num) != 8:
+			num = '0' + num
 		
-		return num_1
+		return int(num, 2)
 
-g = [["2", "3", "1", "1"], ["1", "2", "3", "1"], ["1", "1", "2", "3"], ["3", "1", "1", "2"]]
-a = ["db", "13", "53", "45"]
+"""
+a = [0xdb, 0x13, 0x53, 0x45]
 
 for i in range(len(g[1])):
 	n1 = algo(bin(int(a[0], 16)), bin(int(g[i][0], 16)))
@@ -52,3 +70,4 @@ for i in range(len(g[1])):
 
 	n = int(n1, 2) ^ int(n2, 2) ^ int(n3, 2) ^ int(n4, 2)
 	print(hex(n)[2:])
+"""
