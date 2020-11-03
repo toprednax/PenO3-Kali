@@ -16,7 +16,7 @@ class sniffer():
 			print("Starting wlan1mon")
 			os.system("sudo airmon-ng start wlan1 1")
 			print("Done")
-		print("which wifi u want to crack")
+		print("Which wifi do you want to crack?")
 		self.wifi = input("Wifi name: ")
 		self.find_mac()
 	
